@@ -145,7 +145,7 @@ private struct FoodRow: View {
     let isSelected: Bool
 
     private var macroText: String {
-        String(format: "%.0f kcal · P:%.1fg · G:%.1fg · L:%.1fg",
+        String(format: "%.0f kcal · P:%.1fg · L:%.1fg · G:%.1fg",
                food.calories, food.proteins, food.fats, food.carbs)
     }
 
