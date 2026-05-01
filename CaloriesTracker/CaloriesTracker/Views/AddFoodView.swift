@@ -79,21 +79,7 @@ struct AddFoodView: View {
                     } else {
                         ForEach(savedFoods) { food in
                             Button(action: { selectedFood = food; quantity = "1" }) {
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(food.name)
-                                            .foregroundStyle(.primary)
-                                        Text(String(format: "%.0f kcal · P:%.1fg · G:%.1fg · L:%.1fg",
-                                                    food.calories, food.proteins, food.fats, food.carbs))
-                                            .font(.caption)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                    Spacer()
-                                    if selectedFood?.id == food.id {
-                                        Image(systemName: "checkmark.circle.fill")
-                                            .foregroundStyle(.accentColor)
-                                    }
-                                }
+                                FoodRow(food: food, isSelected: selectedFood?.id == food.id)
                             }
                         }
                         .onDelete(perform: deleteFoods)
@@ -150,6 +136,33 @@ struct AddFoodView: View {
     private func deleteFoods(at offsets: IndexSet) {
         for index in offsets {
             modelContext.delete(savedFoods[index])
+        }
+    }
+}
+
+private struct FoodRow: View {
+    let food: FoodItem
+    let isSelected: Bool
+
+    private var macroText: String {
+        String(format: "%.0f kcal · P:%.1fg · F:%.1fg · C:%.1fg",
+               food.calories, food.proteins, food.fats, food.carbs)
+    }
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(food.name)
+                    .foregroundStyle(.primary)
+                Text(macroText)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.accentColor)
+            }
         }
     }
 }
